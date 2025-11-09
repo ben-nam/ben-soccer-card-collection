@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 
 const BRANDS = ['Panini', 'Topps', 'Upper Deck', 'Futera', 'Match Attax', 'Other']
 const LEAGUES = ['Premier League', 'La Liga', 'Serie A', 'Bundesliga', 'Ligue 1', 'MLS', 'World Cup', 'Champions League', 'Other']
@@ -9,14 +9,28 @@ const CARD_TYPES = ['base', 'numbered', 'signature']
 
 export default function SearchFilters() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const [brand, setBrand] = useState(searchParams.get('brand') || '')
-  const [league, setLeague] = useState(searchParams.get('league') || '')
-  const [cardType, setCardType] = useState(searchParams.get('cardType') || '')
+  const [brand, setBrand] = useState('')
+  const [league, setLeague] = useState('')
+  const [cardType, setCardType] = useState('')
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    // Get params from URL on client side only
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      setBrand(params.get('brand') || '')
+      setLeague(params.get('league') || '')
+      setCardType(params.get('cardType') || '')
+    }
+  }, [])
 
   const applyFilters = () => {
     const params = new URLSearchParams()
-    if (searchParams.get('q')) params.set('q', searchParams.get('q')!)
+    if (typeof window !== 'undefined') {
+      const currentParams = new URLSearchParams(window.location.search)
+      if (currentParams.get('q')) params.set('q', currentParams.get('q')!)
+    }
     if (brand) params.set('brand', brand)
     if (league) params.set('league', league)
     if (cardType) params.set('cardType', cardType)
@@ -28,8 +42,19 @@ export default function SearchFilters() {
     setLeague('')
     setCardType('')
     const params = new URLSearchParams()
-    if (searchParams.get('q')) params.set('q', searchParams.get('q')!)
+    if (typeof window !== 'undefined') {
+      const currentParams = new URLSearchParams(window.location.search)
+      if (currentParams.get('q')) params.set('q', currentParams.get('q')!)
+    }
     router.push(`/search?${params.toString()}`)
+  }
+
+  if (!mounted) {
+    return (
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="text-center text-gray-500">Loading filters...</div>
+      </div>
+    )
   }
 
   return (

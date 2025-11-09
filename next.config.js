@@ -4,6 +4,8 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'i.ebayimg.com'],
   },
+  // Disable static optimization for pages that use dynamic features
+  output: 'standalone',
 }
 
 module.exports = nextConfig

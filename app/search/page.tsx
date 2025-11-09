@@ -6,6 +6,11 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 export const dynamicParams = true
 
+// Prevent static generation
+export async function generateStaticParams() {
+  return []
+}
+
 export default function SearchPage({
   searchParams,
 }: {

@@ -6,6 +6,11 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 export const dynamicParams = true
 
+// Prevent static generation
+export async function generateStaticParams() {
+  return []
+}
+
 export default function BrowsePage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">

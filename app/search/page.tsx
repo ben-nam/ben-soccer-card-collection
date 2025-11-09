@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 import SearchResults from '@/components/SearchResults'
 import SearchFilters from '@/components/SearchFilters'
 
+export const dynamic = 'force-dynamic'
+
 export default function SearchPage({
   searchParams,
 }: {

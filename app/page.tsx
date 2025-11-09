@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
@@ -51,7 +52,9 @@ export default async function Home() {
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Best Selling Cards
           </h2>
-          <BestSellers />
+          <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading best sellers...</div>}>
+            <BestSellers />
+          </Suspense>
         </div>
       </section>
 
@@ -61,7 +64,9 @@ export default async function Home() {
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Featured Cards
           </h2>
-          <FeaturedCards />
+          <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading featured cards...</div>}>
+            <FeaturedCards />
+          </Suspense>
         </div>
       </section>
 

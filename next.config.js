@@ -4,7 +4,11 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'i.ebayimg.com'],
   },
-  // Disable static optimization for pages that use dynamic features
+  // Allow dynamic routes to skip static generation
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
+  // Skip static optimization for dynamic pages
   output: 'standalone',
 }
 

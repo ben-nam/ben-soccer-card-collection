@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useSearchParams } from 'next/navigation'
 
 export default function SignInPage() {
   const [mounted, setMounted] = useState(false)

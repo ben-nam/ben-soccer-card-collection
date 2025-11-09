@@ -14,11 +14,7 @@ export const revalidate = 0
 export const dynamicParams = true
 export const runtime = 'nodejs'
 
-export default function SearchPage({
-  searchParams,
-}: {
-  searchParams: { q?: string; brand?: string; league?: string; cardType?: string }
-}) {
+export default function SearchPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -30,7 +26,7 @@ export default function SearchPage({
           </div>
           
           <div className="lg:col-span-3">
-            <SearchResultsClient searchParams={searchParams} />
+            <SearchResultsClient searchParams={{}} />
           </div>
         </div>
       </div>

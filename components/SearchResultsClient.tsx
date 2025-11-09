@@ -20,9 +20,9 @@ interface Listing {
 }
 
 export default function SearchResultsClient({
-  searchParams,
+  searchParams: _searchParams,
 }: {
-  searchParams: { q?: string; brand?: string; league?: string; cardType?: string }
+  searchParams?: { q?: string; brand?: string; league?: string; cardType?: string }
 }) {
   const [listings, setListings] = useState<Listing[]>([])
   const [loading, setLoading] = useState(true)
@@ -30,11 +30,15 @@ export default function SearchResultsClient({
   useEffect(() => {
     const fetchListings = async () => {
       try {
+        // Get params from URL on client side
         const params = new URLSearchParams()
-        if (searchParams.q) params.set('q', searchParams.q)
-        if (searchParams.brand) params.set('brand', searchParams.brand)
-        if (searchParams.league) params.set('league', searchParams.league)
-        if (searchParams.cardType) params.set('cardType', searchParams.cardType)
+        if (typeof window !== 'undefined') {
+          const urlParams = new URLSearchParams(window.location.search)
+          if (urlParams.get('q')) params.set('q', urlParams.get('q')!)
+          if (urlParams.get('brand')) params.set('brand', urlParams.get('brand')!)
+          if (urlParams.get('league')) params.set('league', urlParams.get('league')!)
+          if (urlParams.get('cardType')) params.set('cardType', urlParams.get('cardType')!)
+        }
 
         const response = await fetch(`/api/cards/search?${params.toString()}`)
         const data = await response.json()
@@ -48,7 +52,14 @@ export default function SearchResultsClient({
     }
 
     fetchListings()
-  }, [searchParams.q, searchParams.brand, searchParams.league, searchParams.cardType])
+    
+    // Listen for URL changes
+    const handlePopState = () => {
+      fetchListings()
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
 
   if (loading) {
     return (

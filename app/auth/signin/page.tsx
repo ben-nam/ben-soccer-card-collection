@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/react'
+import dynamic from 'next/dynamic'
 
-export default function SignInPage() {
+function SignInContent() {
   const [mounted, setMounted] = useState(false)
   const [callbackUrl, setCallbackUrl] = useState('/')
 
@@ -71,4 +72,9 @@ export default function SignInPage() {
     </div>
   )
 }
+
+// Export as dynamic to prevent static generation
+export default dynamic(() => Promise.resolve(SignInContent), {
+  ssr: false,
+})
 

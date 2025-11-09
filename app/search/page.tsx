@@ -1,10 +1,10 @@
-import dynamic from 'next/dynamic'
+import nextDynamic from 'next/dynamic'
 
-const SearchFilters = dynamic(() => import('@/components/SearchFilters'), {
+const SearchFilters = nextDynamic(() => import('@/components/SearchFilters'), {
   ssr: false,
 })
 
-const SearchResultsClient = dynamic(() => import('@/components/SearchResultsClient'), {
+const SearchResultsClient = nextDynamic(() => import('@/components/SearchResultsClient'), {
   ssr: false,
 })
 

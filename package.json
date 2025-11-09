@@ -1,7 +1,7 @@
 {
   "name": "soccer-card-seller",
   "version": "1.0.0",
-  "description": "Soccer Card Seller - Buy, sell, and trade soccer cards",
+  "description": "Soccer Card Seller - Buy, sell, and trade soccer cards - Latest build",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",

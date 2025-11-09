@@ -14,7 +14,9 @@ export default function SearchPage({
         
         <div className="grid lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <SearchFilters />
+            <Suspense fallback={<div className="bg-white p-6 rounded-lg shadow-md">Loading filters...</div>}>
+              <SearchFilters />
+            </Suspense>
           </div>
           
           <div className="lg:col-span-3">

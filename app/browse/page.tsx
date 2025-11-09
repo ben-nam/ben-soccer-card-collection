@@ -1,6 +1,10 @@
 import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import SearchResults from '@/components/SearchResults'
-import SearchFilters from '@/components/SearchFilters'
+
+const SearchFilters = dynamic(() => import('@/components/SearchFilters'), {
+  ssr: false,
+})
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

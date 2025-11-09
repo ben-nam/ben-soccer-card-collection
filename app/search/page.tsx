@@ -4,7 +4,7 @@ const SearchFilters = dynamic(() => import('@/components/SearchFilters'), {
   ssr: false,
 })
 
-const SearchResults = dynamic(() => import('@/components/SearchResults'), {
+const SearchResultsClient = dynamic(() => import('@/components/SearchResultsClient'), {
   ssr: false,
 })
 
@@ -30,7 +30,7 @@ export default function SearchPage({
           </div>
           
           <div className="lg:col-span-3">
-            <SearchResults searchParams={searchParams} />
+            <SearchResultsClient searchParams={searchParams} />
           </div>
         </div>
       </div>

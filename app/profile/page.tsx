@@ -17,6 +17,37 @@ export default async function ProfilePage() {
       listings: {
         where: { isActive: true },
         include: { card: true },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+      },
+      trades: {
+        include: {
+          initiatorCard: {
+            include: { card: true },
+          },
+          receiverCard: {
+            include: { card: true },
+          },
+          receiver: {
+            select: { name: true, email: true },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+      },
+      tradesReceived: {
+        include: {
+          initiatorCard: {
+            include: { card: true },
+          },
+          receiverCard: {
+            include: { card: true },
+          },
+          initiator: {
+            select: { name: true, email: true },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
         take: 10,
       },
       _count: {
@@ -108,9 +139,10 @@ export default async function ProfilePage() {
             </div>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 space-y-6">
+            {/* My Cards Section */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-xl font-semibold mb-4">My Listings</h3>
+              <h3 className="text-xl font-semibold mb-4">My Cards (For Sale/Trade)</h3>
               {user.listings.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-500 mb-4">You don't have any active listings.</p>
@@ -144,6 +176,106 @@ export default async function ProfilePage() {
                         </div>
                       </div>
                     </Link>
+                  ))}
+                  {user.listings.length >= 10 && (
+                    <Link
+                      href="/sell"
+                      className="block text-center text-primary-600 hover:text-primary-700 font-semibold pt-2"
+                    >
+                      View all listings →
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Transaction History Section */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="text-xl font-semibold mb-4">Transaction History</h3>
+              {user.trades.length === 0 && user.tradesReceived.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">No trades yet.</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {/* Trades I initiated */}
+                  {user.trades.map((trade) => (
+                    <div
+                      key={trade.id}
+                      className="p-4 border border-gray-200 rounded-lg"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <p className="font-semibold">
+                            Trade with {trade.receiver.name || trade.receiver.email}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Your card: {trade.initiatorCard.card.playerName} - {trade.initiatorCard.title}
+                          </p>
+                          {trade.receiverCard && (
+                            <p className="text-sm text-gray-600">
+                              Their card: {trade.receiverCard.card.playerName} - {trade.receiverCard.title}
+                            </p>
+                          )}
+                        </div>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                            trade.status === 'completed'
+                              ? 'bg-green-100 text-green-800'
+                              : trade.status === 'accepted'
+                              ? 'bg-blue-100 text-blue-800'
+                              : trade.status === 'rejected'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}
+                        >
+                          {trade.status}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        {new Date(trade.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                  ))}
+
+                  {/* Trades I received */}
+                  {user.tradesReceived.map((trade) => (
+                    <div
+                      key={trade.id}
+                      className="p-4 border border-gray-200 rounded-lg"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <p className="font-semibold">
+                            Trade from {trade.initiator.name || trade.initiator.email}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Their card: {trade.initiatorCard.card.playerName} - {trade.initiatorCard.title}
+                          </p>
+                          {trade.receiverCard && (
+                            <p className="text-sm text-gray-600">
+                              Your card: {trade.receiverCard.card.playerName} - {trade.receiverCard.title}
+                            </p>
+                          )}
+                        </div>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                            trade.status === 'completed'
+                              ? 'bg-green-100 text-green-800'
+                              : trade.status === 'accepted'
+                              ? 'bg-blue-100 text-blue-800'
+                              : trade.status === 'rejected'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}
+                        >
+                          {trade.status}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        {new Date(trade.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
                   ))}
                 </div>
               )}

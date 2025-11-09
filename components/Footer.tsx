@@ -36,8 +36,18 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 Soccer Card Seller. All rights reserved.</p>
+        <div className="border-t border-gray-800 mt-8 pt-8">
+          <div className="mb-6">
+            <h4 className="font-semibold mb-3 text-white">Community Rules</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>✓ Be honest and respectful to all members</li>
+              <li>✓ No scamming. Violators are banned permanently</li>
+              <li>✓ Provide real contact info (name, email, phone) to trade</li>
+            </ul>
+          </div>
+          <div className="text-center text-gray-400">
+            <p>&copy; 2024 Soccer Card Seller. All rights reserved.</p>
+          </div>
         </div>
       </div>
     </footer>

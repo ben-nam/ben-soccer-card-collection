@@ -5,6 +5,7 @@ import { authOptions } from '@/lib/auth'
 import SearchBar from '@/components/SearchBar'
 import BestSellers from '@/components/BestSellers'
 import FeaturedCards from '@/components/FeaturedCards'
+import LivePriceUpdates from '@/components/LivePriceUpdates'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -75,6 +76,15 @@ export default async function Home() {
           </h2>
           <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading featured cards...</div>}>
             <FeaturedCards />
+          </Suspense>
+        </div>
+      </section>
+
+      {/* Live Price Updates Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading price updates...</div>}>
+            <LivePriceUpdates />
           </Suspense>
         </div>
       </section>

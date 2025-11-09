@@ -6,9 +6,22 @@ import { prisma } from './prisma'
 // Note: Clever and Instagram providers would need custom implementation
 // For now, we'll use Google and add placeholders for the others
 
+// Helper function to safely get PrismaAdapter
+function getAdapter() {
+  if (!process.env.DATABASE_URL) {
+    return undefined
+  }
+  try {
+    return PrismaAdapter(prisma)
+  } catch (error) {
+    console.error('Error initializing PrismaAdapter:', error)
+    return undefined
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   // Only use PrismaAdapter if DATABASE_URL is available
-  adapter: process.env.DATABASE_URL ? PrismaAdapter(prisma) : undefined,
+  adapter: getAdapter(),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
@@ -41,6 +54,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/auth/signin',
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-development',
+  debug: process.env.NODE_ENV === 'development',
 }
 

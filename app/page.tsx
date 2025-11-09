@@ -6,8 +6,17 @@ import SearchBar from '@/components/SearchBar'
 import BestSellers from '@/components/BestSellers'
 import FeaturedCards from '@/components/FeaturedCards'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function Home() {
-  const session = await getServerSession(authOptions)
+  let session = null
+  try {
+    session = await getServerSession(authOptions)
+  } catch (error) {
+    // Ignore auth errors during build
+    console.error('Auth error:', error)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">

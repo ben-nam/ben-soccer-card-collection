@@ -3,6 +3,10 @@ import Link from 'next/link'
 
 async function getBestSellers() {
   try {
+    // Skip database query if DATABASE_URL is not available (during build)
+    if (!process.env.DATABASE_URL) {
+      return []
+    }
     const listings = await prisma.listing.findMany({
       where: {
         isBestSeller: true,

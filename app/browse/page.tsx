@@ -1,11 +1,14 @@
-import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import SearchResults from '@/components/SearchResults'
 
 const SearchFilters = dynamic(() => import('@/components/SearchFilters'), {
   ssr: false,
 })
 
+const SearchResults = dynamic(() => import('@/components/SearchResults'), {
+  ssr: false,
+})
+
+// Prevent static generation
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 export const dynamicParams = true
@@ -23,9 +26,7 @@ export default function BrowsePage() {
           </div>
           
           <div className="lg:col-span-3">
-            <Suspense fallback={<div>Loading...</div>}>
-              <SearchResults searchParams={{}} />
-            </Suspense>
+            <SearchResults searchParams={{}} />
           </div>
         </div>
       </div>

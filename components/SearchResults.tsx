@@ -3,6 +3,10 @@ import Link from 'next/link'
 
 async function searchCards(params: { q?: string; brand?: string; league?: string; cardType?: string }) {
   try {
+    // Skip database query if DATABASE_URL is not available (during build)
+    if (!process.env.DATABASE_URL) {
+      return []
+    }
     const where: any = {
       isActive: true,
     }
@@ -55,7 +59,14 @@ export default async function SearchResults({
 }: {
   searchParams: { q?: string; brand?: string; league?: string; cardType?: string }
 }) {
-  const listings = await searchCards(searchParams)
+  // Handle missing DATABASE_URL gracefully
+  let listings: any[] = []
+  try {
+    listings = await searchCards(searchParams)
+  } catch (error) {
+    console.error('Error in SearchResults:', error)
+    listings = []
+  }
 
   if (listings.length === 0) {
     return (

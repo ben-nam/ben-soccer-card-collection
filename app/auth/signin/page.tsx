@@ -4,10 +4,6 @@ import { Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 
-// Prevent static generation
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 function SignInForm() {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/'
